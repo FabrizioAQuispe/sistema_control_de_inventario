@@ -21,7 +21,7 @@ const Mantenimiento = () => {
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="date" name="" id="" />
           </div>
           <div className='flex flex-col'>
-            <label htmlFor="">Ingrese la cantidad</label>
+            <label htmlFor="">Ingrese la referencia</label>
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="number" name="" id="" />
           </div>
           <div className='flex flex-col'>
