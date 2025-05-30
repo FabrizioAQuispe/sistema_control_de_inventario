@@ -72,10 +72,30 @@ const useMantenimiento = () => {
             console.error("ERROR SERVER LISTAR MANTENIMIENTO: " + error);
         }
     }
+
+    const handleEditarMantenimiento = async () => {
+        try{
+            const response = await fetch(`http://localhost:5270/editar_productos`,{
+                headers:{
+                    "Content-Type" : "application/json"
+                },
+            });
+
+            if(!response.ok){
+                console.error("ERROR RESPONSE SERVER API");
+            }
+
+            const dataResponse = await response.json();
+            return dataResponse;
+        }catch(error:any){
+            console.error("ERROR SERVER RESPONSE: " + error);
+        }
+    }
     return {
         handleBuscarNombre,
         handleCrearMantenimiento,
-        handleListarMantenimiento
+        handleListarMantenimiento,
+        handleEditarMantenimiento
     }
 }
 

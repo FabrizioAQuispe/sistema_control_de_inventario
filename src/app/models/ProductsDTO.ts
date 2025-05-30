@@ -5,5 +5,4 @@ export interface ProductosDTO {
     categoria: string,
     referencia: string,
     estado:string,
-    tipo:string
 }

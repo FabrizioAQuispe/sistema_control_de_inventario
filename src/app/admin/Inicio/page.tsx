@@ -2,7 +2,9 @@ import React from 'react'
 
 const Index = () => {
   return (
-    <div>Bienvenido a tu página original</div>
+    <div>
+      <h1>hOLA BIENVENIDO A LA PAGINA DE INICIO :V</h1>
+    </div>
   )
 }
 

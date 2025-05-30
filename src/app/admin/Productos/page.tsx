@@ -1,25 +1,25 @@
 "use client"
+import ModalEditar from '@/app/components/ModalEditar';
 import useProductos from '@/app/hooks/useProductos';
 import { ProductosDTO } from '@/app/models/ProductsDTO';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Productos = () => {
-  const [formData, setFormData] = useState({
+  //HOOK PARA CREAR EL FORM DATA
+  const [ formData, setFormData] = useState({
     "id_prod": 0,
     "nombre": "",
     "descripcion": "",
     "categoria": "",
     "referencia": "",
     "estado": "",
-    "tipo": ""
   });
 
+  //Hooks para los productos
   const [listProducts, setListProducts] = useState<ProductosDTO[]>([]);
 
-
-  //Hooks para los productos
-  const { handleCreateProductos, handleGetProductos } = useProductos();
+  const { handleCreateProductos, handleGetProductos,handleUpdateProductos } = useProductos();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,18 @@ const Productos = () => {
     };
 
     fetchData();
-  }, [])
+  }, []);
+
+  //Hooks para abrir los popups
+  const [IsOpen, setIsOpen] = useState(false);
+
+  //Metodo para pasar abrir el modal de acuerdo a lo selecionado
+  const [productoSeleccionado,setProductoSeleccionado] = useState();
+  
+  const handleMostrarModal = (producto:any) => {
+    setProductoSeleccionado(producto);
+    setIsOpen(true);
+  }
 
   return (
     <section className='grid grid-cols gap-2 px-4 py-6'>
@@ -49,12 +60,7 @@ const Productos = () => {
               onChange={(e) => setFormData(prev => ({ ...prev, categoria: e.target.value }))}
             />
           </div>
-          <div className='flex flex-col'>
-            <label htmlFor="">Ingrese la referencia</label>
-            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text" name="referencia" id=""
-              onChange={(e) => setFormData(prev => ({ ...prev, referencia: e.target.value }))}
-            />
-          </div>
+
 
           <div className='flex flex-col'>
             <label>Ingrese el estado</label>
@@ -68,18 +74,7 @@ const Productos = () => {
               <option value="0">Inactivo</option>
             </select>          </div>
 
-          <div className='flex flex-col'>
-            <label>Ingrese el Tipo</label>
-            <select
-              value={formData.tipo}
-              onChange={(e) => setFormData(prev => ({ ...prev, tipo: e.target.value }))}
-              className='px-2 py-2 border border-blue-700 outline rounded-md mb-2'
-            >
-              <option value="">Seleccione el tipo: </option>
-              <option value="1">Ingreso</option>
-              <option value="2">Salida</option>
-            </select>
-          </div>
+
         </form>
         <button className='bg-blue-900 text-white px-4 block py-2 w-[200px] mt-4 rounded-md cursor-pointer' onClick={() => handleCreateProductos(formData)}>REGISTRAR</button>
       </div>
@@ -89,8 +84,6 @@ const Productos = () => {
           <tr>
             <th className='px-4 py-2 border-b'>Nombre</th>
             <th className='px-4 py-2 border-b'>Categoria</th>
-            <th className='px-4 py-2 border-b'>Referencia</th>
-            <th className='px-4 py-2 border-b'>Tipo</th>
             <th className='px-4 py-2 border-b'>Acciones</th>
           </tr>
         </thead>
@@ -100,13 +93,13 @@ const Productos = () => {
               <tr key={producto.id_prod} className='hover:bg-gray-50 transition-colors'>
                 <td className='px-4 py-2 border-b'>{producto.nombre}</td>
                 <td className='px-4 py-2 border-b'>{producto.categoria}</td>
-                <td className='px-4 py-2 border-b'>{producto.referencia}</td>
-                <td className='px-4 py-2 border-b'>{producto.tipo}</td>
                 <td className='px-4 py-2 border-b'>
-                  <Link className='px-2 py-2' href={`/admin/Productos/${producto.id_prod}/editar`}>
+                  <Link className='px-2 py-2' href={`/admin/Productos/`}
+                    onClick={() => handleMostrarModal(producto)}
+                  >
                     Editar
                   </Link>
-                  <Link className='px-2 py-2' href={`/admin/Productos/${producto.id_prod}/eliminar`}>
+                  <Link className='px-2 py-2' href={`/admin/Productos/`}>
                     Eliminar
                   </Link>
                 </td>
@@ -122,6 +115,47 @@ const Productos = () => {
         </tbody>
 
       </table>
+
+      <ModalEditar isOpen={IsOpen} onClose={() => setIsOpen(false)}>
+        <h1 className='text-2xl text-center'>Modal de Edición</h1>
+        <form className='grid grid-cols-2 gap-2 mt-4' onSubmit={() => handleUpdateProductos(formData)}>
+          <div className='flex flex-col'>
+            <label htmlFor="">Ingresa el nombre: </label>
+            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text" name="nombre" id=""
+              value={formData.nombre}
+              onChange={(e) => setFormData(prev => ({ ...prev, nombre: e.target.value }))}
+            />
+          </div>
+
+          <div className='flex flex-col'>
+            <label htmlFor="">Ingresa la categoría</label>
+            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text" name="categoria" id=""
+              value={formData.categoria}
+              onChange={(e) => setFormData(prev => ({ ...prev, categoria: e.target.value }))}
+            />
+          </div>
+
+
+          <div className='flex flex-col'>
+            <label>Ingrese el estado</label>
+            <select
+              value={formData.estado}
+              onChange={(e) => setFormData(prev => ({ ...prev, estado: e.target.value }))}
+              className='px-2 py-2 border border-blue-700 outline rounded-md mb-2'
+            >
+              <option value="">Seleccione un estado: </option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+            </div>
+
+
+          <button className='bg-blue-900 text-white px-4 block py-2 w-full mt-4 rounded-md cursor-pointer col-span-2'
+          
+          onClick={() => handleUpdateProductos(formData)}>EDITAR</button>
+
+        </form>
+      </ModalEditar>
     </section>
   )
 }

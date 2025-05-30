@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { MantenimientoDTO } from '@/app/models/MantenimientoDTO'
 import { MantenimientoFiltroDTO } from '@/app/models/MantenimientoFiltroDTO'
+import ModalEditar from '@/app/components/ModalEditar'
 
 const Mantenimiento = () => {
   const { handleBuscarNombre, handleCrearMantenimiento, handleListarMantenimiento } = useMantenimiento();
@@ -13,10 +14,10 @@ const Mantenimiento = () => {
 
   const [formData, setFormData] = useState({
     id_prod: 0,
+    id_tipo: "",
     nombre: '',
-    tipo: '',
     fecha_ingreso: '',
-    cantidad: '',
+    cantidad: 0,
     referencia: '',
   });
 
@@ -59,6 +60,10 @@ const Mantenimiento = () => {
     fetchData();
   }, []);
 
+
+  //ESTADO PARA ABRIR LOS MODALES
+  const [IsOpen, setIsOpen] = useState(false);
+
   return (
     <section className='grid grid-cols gap-2 px-4 py-6'>
       <h2 className='text-2xl'>Mantenimiento</h2>
@@ -99,7 +104,7 @@ const Mantenimiento = () => {
           <div className='flex flex-col'>
             <label>Ingrese la cantidad</label>
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text"
-              onChange={(e) => setFormData(prev => ({ ...prev, cantidad: e.target.value }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, cantidad: Number(e.target.value) }))}
             />
           </div>
 
@@ -113,8 +118,21 @@ const Mantenimiento = () => {
           <div className='flex flex-col'>
             <label>Ingrese la referencia</label>
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text"
-              onChange={(e) => setFormData(prev => ({ ...prev, referencia: e.target.value }))}
+              onChange={(e) =>  setFormData(prev => ({ ...prev, referencia: (e.target.value) }))}
             />
+          </div>
+
+          <div className='flex flex-col'>
+            <label>Ingrese el Tipo</label>
+            <select
+              value={Number(formData.id_tipo)}
+              onChange={(e) =>   setFormData(prev => ({ ...prev, id_tipo: (e.target.value) }))}
+              className='px-2 py-2 border border-blue-700 outline rounded-md mb-2'
+            >
+              <option value="">Seleccione el tipo: </option>
+              <option value="1">Ingreso</option>
+              <option value="2">Salida</option>
+            </select>
           </div>
 
           <button type="submit" className='bg-blue-900 text-white px-4 py-2 rounded-md mt-2'>
@@ -146,13 +164,76 @@ const Mantenimiento = () => {
               <td className='px-4 py-2 border-b'>{item.fecha_ingreso}</td>
               <td className='px-4 py-2 border-b'>{item.tipo}</td>
               <td className='px-4 py-2 border-b'>
-                <Link className='px-2 py-2' href={'/admin/Productos'}>Editar</Link>
-                <Link className='px-2 py-2' href={'/admin/Productos'}>Eliminar</Link>
+                <Link className='px-2 py-2' href={'/admin/Mantenimiento'} onClick={() => setIsOpen(true)}>Editar</Link>
+                <Link className='px-2 py-2' href={'/admin/Mantenimiento'}>Eliminar</Link>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <ModalEditar isOpen={IsOpen} onClose={() => setIsOpen(false)}>
+        <h1 className='text-2xl text-center'>Edición de Mantenimiento</h1>
+      <div className='mt-4'>
+        <form className='grid grid-cols-2 gap-2' onSubmit={(e) => {
+          e.preventDefault();
+          handleCrearMantenimiento(formData);
+        }}>
+          {/* Input con autocompletado */}
+          <div className='flex flex-col relative'>
+            <label htmlFor="nombre">Ingrese el nombre: </label>
+            <input
+              className='px-2 py-2 border border-blue-700 outline rounded-md mb-2'
+              type="text"
+              id="nombre"
+              value={nombreInput}
+              onChange={handleChangeNombre}
+              autoComplete="off"
+            />
+            {sugerencias.length > 0 && (
+              <ul className="absolute bg-white border border-gray-300 rounded-md z-10 max-h-40 overflow-y-auto w-full top-full mt-1">
+                {sugerencias.map((item, index) => (
+                  <li
+                    key={index}
+                    className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
+                    onClick={() => handleSelectSugerencia(item)}
+                  >
+                    {item.nombre}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Otros campos */}
+          <div className='flex flex-col'>
+            <label>Ingrese la cantidad</label>
+            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text"
+              onChange={(e) => setFormData(prev => ({ ...prev, cantidad: Number(e.target.value )}))}
+            />
+          </div>
+
+          <div className='flex flex-col'>
+            <label>Ingrese la fecha de ingreso</label>
+            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="date"
+              onChange={(e) => setFormData(prev => ({ ...prev, fecha_ingreso: e.target.value }))}
+            />
+          </div>
+
+          <div className='flex flex-col'>
+            <label>Ingrese la referencia</label>
+            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text"
+              onChange={(e) => setFormData(prev => ({ ...prev, referencia: e.target.value }))}
+            />
+          </div>
+
+          <button type="submit" className='bg-blue-900 text-white px-4 py-2 rounded-md mt-2 col-span-2 w-full'>
+            EDITAR
+          </button>
+        </form>
+      </div>
+
+      </ModalEditar>
     </section>
   )
 }
