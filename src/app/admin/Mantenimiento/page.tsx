@@ -16,7 +16,7 @@ const Mantenimiento = () => {
     id_prod: 0,
     id_tipo: "",
     nombre: '',
-    fecha_ingreso: '',
+    fecha: '',
     cantidad: 0,
     referencia: '',
   });
@@ -109,9 +109,9 @@ const Mantenimiento = () => {
           </div>
 
           <div className='flex flex-col'>
-            <label>Ingrese la fecha de ingreso</label>
+            <label>Ingrese la fecha</label>
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="date"
-              onChange={(e) => setFormData(prev => ({ ...prev, fecha_ingreso: e.target.value }))}
+              onChange={(e) => setFormData(prev => ({ ...prev, fecha: e.target.value }))}
             />
           </div>
 
@@ -141,36 +141,47 @@ const Mantenimiento = () => {
         </form>
       </div>
 
-      {/* TABLA DE RESULTADOS */}
-      <table className='min-w-full border border-gray-200 shadow-sm rounded-md overflow-hidden mt-2'>
-        <thead className='bg-gray-100 text-gray-700 text-left'>
-          <tr>
-            <th className='px-4 py-2 border-b'>Nombre</th>
-            <th className='px-4 py-2 border-b'>Cantidad</th>
-            <th className='px-4 py-2 border-b'>Categoria</th>
-            <th className='px-4 py-2 border-b'>Referencia</th>
-            <th className='px-4 py-2 border-b'>Fecha de Ingreso</th>
-            <th className='px-4 py-2 border-b'>Tipo I/S</th>
-            <th className='px-4 py-2 border-b'>Acciones</th>
+{/* CONTENEDOR CON SCROLL VERTICAL */}
+<div className="max-h-[500px] overflow-y-auto rounded-md border border-gray-200 mt-2">
+  <table className="min-w-full shadow-sm">
+    <thead className="bg-gray-100 text-gray-700 text-left">
+      <tr>
+        <th className="px-4 py-2 border-b">Nombre</th>
+        <th className="px-4 py-2 border-b">Cantidad</th>
+        <th className="px-4 py-2 border-b">Categoria</th>
+        <th className="px-4 py-2 border-b">Referencia</th>
+        <th className="px-4 py-2 border-b">Fecha</th>
+        <th className="px-4 py-2 border-b">Tipo I/S</th>
+        <th className="px-4 py-2 border-b">Acciones</th>
+      </tr>
+    </thead>
+    <tbody className="text-sm text-gray-800">
+      {mantenimiento.length > 0 ? (
+        mantenimiento.map((item, index) => (
+          <tr key={index} className="hover:bg-gray-50 transition-colors">
+            <td className="px-4 py-2 border-b">{item.nombre}</td>
+            <td className="px-4 py-2 border-b">{item.cantidad}</td>
+            <td className="px-4 py-2 border-b">{item.categoria}</td>
+            <td className="px-4 py-2 border-b">{item.referencia}</td>
+            <td className="px-4 py-2 border-b">{item.fecha}</td>
+            <td className="px-4 py-2 border-b">{item.tipo}</td>
+            <td className="px-4 py-2 border-b">
+              <Link className="px-2 py-2" href="/admin/Mantenimiento" onClick={() => setIsOpen(true)}>Editar</Link>
+              <Link className="px-2 py-2" href="/admin/Mantenimiento">Eliminar</Link>
+            </td>
           </tr>
-        </thead>
-        <tbody className='text-sm text-gray-800'>
-          {mantenimiento.map((item, index) => (
-            <tr key={index} className='hover:bg-gray-50 transition-colors'>
-              <td className='px-4 py-2 border-b'>{item.nombre}</td>
-              <td className='px-4 py-2 border-b'>{item.cantidad}</td>
-              <td className='px-4 py-2 border-b'>{item.categoria}</td>
-              <td className='px-4 py-2 border-b'>{item.referencia}</td>
-              <td className='px-4 py-2 border-b'>{item.fecha_ingreso}</td>
-              <td className='px-4 py-2 border-b'>{item.tipo}</td>
-              <td className='px-4 py-2 border-b'>
-                <Link className='px-2 py-2' href={'/admin/Mantenimiento'} onClick={() => setIsOpen(true)}>Editar</Link>
-                <Link className='px-2 py-2' href={'/admin/Mantenimiento'}>Eliminar</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        ))
+      ) : (
+        <tr>
+          <td className="px-4 py-2 border-b text-center" colSpan={7}>
+            No hay productos disponibles.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
 
       <ModalEditar isOpen={IsOpen} onClose={() => setIsOpen(false)}>
         <h1 className='text-2xl text-center'>Edición de Mantenimiento</h1>
@@ -214,7 +225,7 @@ const Mantenimiento = () => {
           </div>
 
           <div className='flex flex-col'>
-            <label>Ingrese la fecha de ingreso</label>
+            <label>Ingrese la fecha</label>
             <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="date"
               onChange={(e) => setFormData(prev => ({ ...prev, fecha_ingreso: e.target.value }))}
             />

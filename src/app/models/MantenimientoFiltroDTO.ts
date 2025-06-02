@@ -4,5 +4,5 @@ export interface MantenimientoFiltroDTO {
     categoria: string,
     referencia: string,
     tipo: string,
-    fecha_ingreso:string
+    fecha:string
 }

@@ -10,10 +10,8 @@ const Productos = () => {
   const [ formData, setFormData] = useState({
     "id_prod": 0,
     "nombre": "",
-    "descripcion": "",
-    "categoria": "",
-    "referencia": "",
-    "estado": "",
+    "categoria" :"",
+    "estado" : ""
   });
 
   //Hooks para los productos
@@ -34,12 +32,20 @@ const Productos = () => {
   const [IsOpen, setIsOpen] = useState(false);
 
   //Metodo para pasar abrir el modal de acuerdo a lo selecionado
-  const [productoSeleccionado,setProductoSeleccionado] = useState();
-  
-  const handleMostrarModal = (producto:any) => {
-    setProductoSeleccionado(producto);
-    setIsOpen(true);
-  }
+  const [productoSeleccionado,setProductoSeleccionado] = useState<any>();
+
+const handleMostrarModal = (producto: ProductosDTO) => {
+  setProductoSeleccionado(producto);
+  setFormData({
+    id_prod: producto.id_prod,
+    nombre: producto.nombre,
+    categoria: producto.categoria ?? "",
+    estado: producto.estado
+  });
+  console.log(producto.id_prod)
+  setIsOpen(true);
+};
+
 
   return (
     <section className='grid grid-cols gap-2 px-4 py-6'>
@@ -79,42 +85,42 @@ const Productos = () => {
         <button className='bg-blue-900 text-white px-4 block py-2 w-[200px] mt-4 rounded-md cursor-pointer' onClick={() => handleCreateProductos(formData)}>REGISTRAR</button>
       </div>
       {/* SECCIÓN PARA LAS TABLAS */}
-      <table className='min-w-full border border-gray-200 shadow-sm rounded-md overflow-hidden mt-2'>
-        <thead className='bg-gray-100 text-gray-700 text-left'>
-          <tr>
-            <th className='px-4 py-2 border-b'>Nombre</th>
-            <th className='px-4 py-2 border-b'>Categoria</th>
-            <th className='px-4 py-2 border-b'>Acciones</th>
+<div className="max-h-96 overflow-y-auto rounded-md border border-gray-200">
+  <table className="min-w-full shadow-sm">
+    <thead className="bg-gray-100 text-gray-700 text-left">
+      <tr>
+        <th className="px-4 py-2 border-b">Nombre</th>
+        <th className="px-4 py-2 border-b">Categoria</th>
+        <th className="px-4 py-2 border-b">Acciones</th>
+      </tr>
+    </thead>
+    <tbody className="text-sm text-gray-800">
+      {listProducts.length > 0 ? (
+        listProducts.map((producto) => (
+          <tr key={producto.id_prod} className="hover:bg-gray-50 transition-colors">
+            <td className="px-4 py-2 border-b">{producto.nombre}</td>
+            <td className="px-4 py-2 border-b">{producto.categoria}</td>
+            <td className="px-4 py-2 border-b">
+              <Link className="px-2 py-2" href={`/admin/Productos/`} onClick={() => handleMostrarModal(producto)}>
+                Editar
+              </Link>
+              <Link className="px-2 py-2" href={`/admin/Productos/`}>
+                Eliminar
+              </Link>
+            </td>
           </tr>
-        </thead>
-        <tbody className='text-sm text-gray-800'>
-          {listProducts.length > 0 ? (
-            listProducts.map((producto) => (
-              <tr key={producto.id_prod} className='hover:bg-gray-50 transition-colors'>
-                <td className='px-4 py-2 border-b'>{producto.nombre}</td>
-                <td className='px-4 py-2 border-b'>{producto.categoria}</td>
-                <td className='px-4 py-2 border-b'>
-                  <Link className='px-2 py-2' href={`/admin/Productos/`}
-                    onClick={() => handleMostrarModal(producto)}
-                  >
-                    Editar
-                  </Link>
-                  <Link className='px-2 py-2' href={`/admin/Productos/`}>
-                    Eliminar
-                  </Link>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className='px-4 py-2 border-b text-center' colSpan={5}>
-                No hay productos disponibles.
-              </td>
-            </tr>
-          )}
-        </tbody>
+        ))
+      ) : (
+        <tr>
+          <td className="px-4 py-2 border-b text-center" colSpan={3}>
+            No hay productos disponibles.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
 
-      </table>
 
       <ModalEditar isOpen={IsOpen} onClose={() => setIsOpen(false)}>
         <h1 className='text-2xl text-center'>Modal de Edición</h1>

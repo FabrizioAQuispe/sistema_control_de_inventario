@@ -40,6 +40,7 @@ const useProductos = () => {
 
             const data = await response.json();
             console.log(data)
+            handleGetProductos()
             return data;
         } catch (error: any) {
             console.error("ERROR HANDLE CREATE PRODUCTS: " + error);

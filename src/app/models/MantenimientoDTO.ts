@@ -3,6 +3,6 @@ export interface MantenimientoDTO {
     id_tipo:string
     nombre: string,
     referencia:string,
-    fecha_ingreso: string,
+    fecha: string,
     cantidad: number,
 }
