@@ -1,8 +1,8 @@
 "use client"
-import Image from "next/image";
 import Link from "next/link";
 import useUser from "./hooks/useUser";
 import { useState } from "react";
+import { setCookie } from "cookies-next";
 
 export default function Home() {
 
@@ -13,7 +13,18 @@ export default function Home() {
     password:""
   });
 
-  
+  const handleFetchData = async () => {
+    try {
+      const dataResponse = await handleLogin(formData);
+      if (!dataResponse) {
+        window.location.href = '/'
+      }
+      setCookie("data",dataResponse);
+      window.location.href = '/admin'
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
+  };
 
   return (
 <main className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 p-4">
@@ -45,7 +56,7 @@ export default function Home() {
       className="mt-6 bg-blue-700 hover:bg-blue-800 transition-colors text-white font-semibold text-center rounded-md py-3"
       onClick={(e) => {
         e.preventDefault();
-        handleLogin(formData)
+        handleFetchData();
       }}
     >
       Ingresar
