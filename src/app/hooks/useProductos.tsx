@@ -1,27 +1,20 @@
 import React, { useEffect } from 'react'
 import { ProductosDTO } from '../models/ProductsDTO';
-import { getCookie } from 'cookies-next';
+import Cookies from 'js-cookie';
+
 
 const useProductos = () => {
-useEffect(() => {
-  const fetchDataResponse = async () => {
-    try {
-      const cookie = JSON.stringify(getCookie("data"));
-      console.log("ESTE ES TU COOKIE: " + cookie)
 
-    } catch (error) {
-      console.error("Error al leer y parsear la cookie:", error);
-    }
-  };
-
-  fetchDataResponse();
-}, []);
+    const cookieProfile = Cookies.get("data");
+    const cookieParse = JSON.parse(cookieProfile || "{}");
+    const token = cookieParse[0].token;
 
     const handleGetProductos = async () => {
         try {
             const response = await fetch(`http://localhost:5270/listar_productos`, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 method: "GET"
             });
@@ -31,7 +24,6 @@ useEffect(() => {
             }
 
             const data = await response.json();
-            console.log(data)
             return data;
         } catch (error: any) {
             console.error("ERROR HANDLE LIST PRODUCTS: " + error);
@@ -42,7 +34,9 @@ useEffect(() => {
         try {
             const response = await fetch(`http://localhost:5270/crear_productos`, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+
                 },
                 method: "POST",
                 body: JSON.stringify(productosInput)
@@ -65,7 +59,9 @@ useEffect(() => {
         try {
             const response = await fetch(`http://localhost:5270/editar_productos`, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+
                 },
                 method: "PUT",
                 body: JSON.stringify(productosInput)

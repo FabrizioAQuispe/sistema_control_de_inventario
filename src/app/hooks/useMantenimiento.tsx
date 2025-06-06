@@ -1,7 +1,10 @@
 import React from 'react'
 import { MantenimientoDTO } from '../models/MantenimientoDTO';
+import ObtenerCookies from '../models/ObtenerCookies';
 
 const useMantenimiento = () => {
+
+    const {cookieParse} = ObtenerCookies();
 
     const handleBuscarNombre = async (nombre: string) => {
         try {
@@ -22,7 +25,6 @@ const useMantenimiento = () => {
 
             const lista = await response.json();
 
-            // Extrae solo los nombres
             const soloNombres = lista.map((item: any) => ({
                 nombre: item.nombre,
                 id_prod: item.id_prod
@@ -37,7 +39,9 @@ const useMantenimiento = () => {
         try {
             const response = await fetch('http://localhost:5270/api/Mantenimiento/crear_seguimiento', {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${cookieParse[0].token}`
+
                 },
                 method: "POST",
                 body: JSON.stringify(mantenimientoInput)
@@ -57,7 +61,9 @@ const useMantenimiento = () => {
         try {
             const response = await fetch('http://localhost:5270/api/Mantenimiento/buscar_seguimiento', {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                                        "Authorization": `Bearer ${cookieParse[0].token}`
+
                 },
                 method: "GET"
             });
@@ -74,20 +80,20 @@ const useMantenimiento = () => {
     }
 
     const handleEditarMantenimiento = async () => {
-        try{
-            const response = await fetch(`http://localhost:5270/editar_productos`,{
-                headers:{
-                    "Content-Type" : "application/json"
+        try {
+            const response = await fetch(`http://localhost:5270/editar_productos`, {
+                headers: {
+                    "Content-Type": "application/json"
                 },
             });
 
-            if(!response.ok){
+            if (!response.ok) {
                 console.error("ERROR RESPONSE SERVER API");
             }
 
             const dataResponse = await response.json();
             return dataResponse;
-        }catch(error:any){
+        } catch (error: any) {
             console.error("ERROR SERVER RESPONSE: " + error);
         }
     }

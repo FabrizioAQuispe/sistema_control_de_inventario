@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import useMovimientos from '../hooks/useMovimientos'
 import { MovimientosDTO } from '../models/MovimientosDTO';
+import Cookies from 'js-cookie';
+import ObtenerCookies from '../models/ObtenerCookies';
 
 
 const Table = () => {
 
   const [movimientos, setMovimientos] = useState<MovimientosDTO[]>();
 
+  const {cookieParse} = ObtenerCookies();
+
   const handleGetMovimientos = async () => {
     try {
+
       const response = await fetch(`http://localhost:5270/api/Mantenimiento/listar_movimientos`, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization" : `Bearer ${cookieParse[0].token}`
         },
-        method: "GET"
+        method: "GET",
       });
       if (!response.ok) {
         console.error("ERROR SERVER OK MOVIMIENTOS SERVER")

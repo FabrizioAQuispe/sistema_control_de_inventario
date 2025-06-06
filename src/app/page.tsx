@@ -19,7 +19,7 @@ export default function Home() {
       if (!dataResponse) {
         window.location.href = '/'
       }
-      setCookie("data",dataResponse);
+      setCookie("data",JSON.stringify(dataResponse));
       window.location.href = '/admin'
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
