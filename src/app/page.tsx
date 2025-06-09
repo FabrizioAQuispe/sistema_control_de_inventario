@@ -20,7 +20,7 @@ export default function Home() {
         window.location.href = '/'
       }
       setCookie("data",JSON.stringify(dataResponse));
-      window.location.href = '/admin'
+      window.location.href = '/admin/Inicio'
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
@@ -52,7 +52,7 @@ export default function Home() {
     />
 
     <Link
-      href="/admin"
+      href="/admin/Inicio"
       className="mt-6 bg-blue-700 hover:bg-blue-800 transition-colors text-white font-semibold text-center rounded-md py-3"
       onClick={(e) => {
         e.preventDefault();

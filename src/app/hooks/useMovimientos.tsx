@@ -33,9 +33,31 @@ const useMovimientos = () => {
         }
     };
 
+    const handleFiltrarMovimientos = async (nombre:string,fecha:string,referencia:string) => {
+        try{
+            const response = await fetch(`${API_PROD}/api/Mantenimiento/filtrar_movimiento?nombre=${nombre}&fecha=${fecha}&referencia=${referencia}`,{
+                headers:{
+                    "Content-Type" : "application/json",
+                    "Authorization" : `Bearer ${cookieParse[0].token}`
+                },
+                method: "GET"
+            });
+
+            if(!response.ok){
+                console.error('ERROR AL FILTRAR LOS MOVIMIENTOS');
+            }
+
+            const data = await response.json();
+            return data;
+        }catch(error: any){
+            console.error("ERROR SERVER RESPONSE: " + error);
+        }
+    }
+
     return {
         movimientos,
-        handleGetMovimientos
+        handleGetMovimientos,
+        handleFiltrarMovimientos
     };
 };
 

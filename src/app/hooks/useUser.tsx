@@ -20,6 +20,7 @@ const useUser = () => {
             }
 
             const dataResponse = await response.json();
+            
             return dataResponse;
         } catch (error: any) {
             console.error("ERROR SERVER HANDLE LOGIN: " + error);

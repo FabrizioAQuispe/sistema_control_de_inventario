@@ -5,7 +5,7 @@ import { API_PROD } from '../models/variables';
 
 const useMantenimiento = () => {
 
-    const {cookieParse} = ObtenerCookies();
+    const { cookieParse } = ObtenerCookies();
 
     const handleBuscarNombre = async (nombre: string) => {
         try {
@@ -13,7 +13,9 @@ const useMantenimiento = () => {
                 `${API_PROD}/api/Mantenimiento/buscar_nombre?nombre=${encodeURIComponent(nombre)}`,
                 {
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${cookieParse[0].token}`
+
                     },
                     method: "GET"
                 }
@@ -63,7 +65,7 @@ const useMantenimiento = () => {
             const response = await fetch(`${API_PROD}/api/Mantenimiento/buscar_seguimiento`, {
                 headers: {
                     "Content-Type": "application/json",
-                                        "Authorization": `Bearer ${cookieParse[0].token}`
+                    "Authorization": `Bearer ${cookieParse[0].token}`
 
                 },
                 method: "GET"
