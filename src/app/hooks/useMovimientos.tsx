@@ -2,18 +2,20 @@
 import { useState } from 'react';
 import { ListaMovimientosDTO } from '../models/ListaMovimientosDTO';
 import ObtenerCookies from '../models/ObtenerCookies';
+import { API_PROD } from '../models/variables';
 
 
 const useMovimientos = () => {
     const [movimientos, setMovimientos] = useState<ListaMovimientosDTO[]>([]);
-    const {cookieParse} = ObtenerCookies();
+    const { cookieParse } = ObtenerCookies();
+
 
     const handleGetMovimientos = async () => {
         try {
-            const response = await fetch(`http://localhost:5270/api/Mantenimiento/listar_movimientos`, {
+            const response = await fetch(`${API_PROD}/api/Mantenimiento/listar_movimientos`, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization" : `Bearer ${cookieParse[0].token}`
+                    "Authorization": `Bearer ${cookieParse[0].token}`
                 },
                 method: "GET",
             });

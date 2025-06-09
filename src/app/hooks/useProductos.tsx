@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 import { ProductosDTO } from '../models/ProductsDTO';
 import Cookies from 'js-cookie';
-
+import { API_PROD } from '../models/variables';
 
 const useProductos = () => {
 
-    const cookieProfile = Cookies.get("data");
-    const cookieParse = JSON.parse(cookieProfile || "{}");
-    const token = cookieParse[0].token;
+const cookieProfile = typeof window !== 'undefined' ? Cookies.get("data") : null;
+const cookieParse = cookieProfile ? JSON.parse(cookieProfile) : [];
+const token = cookieParse[0]?.token || "";
 
     const handleGetProductos = async () => {
         try {
-            const response = await fetch(`http://localhost:5270/listar_productos`, {
+            const response = await fetch(`${API_PROD}/listar_productos`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -32,7 +32,7 @@ const useProductos = () => {
 
     const handleCreateProductos = async (productosInput: ProductosDTO) => {
         try {
-            const response = await fetch(`http://localhost:5270/crear_productos`, {
+            const response = await fetch(`${API_PROD}/crear_productos`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -57,7 +57,7 @@ const useProductos = () => {
 
     const handleUpdateProductos = async (productosInput: ProductosDTO) => {
         try {
-            const response = await fetch(`http://localhost:5270/editar_productos`, {
+            const response = await fetch(`${API_PROD}/editar_productos`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`

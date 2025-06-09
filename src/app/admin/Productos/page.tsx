@@ -4,7 +4,6 @@ import useProductos from '@/app/hooks/useProductos';
 import { ProductosDTO } from '@/app/models/ProductsDTO';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import Cookies from 'js-cookie';
 
 const Productos = () => {
   //HOOK PARA CREAR EL FORM DATA

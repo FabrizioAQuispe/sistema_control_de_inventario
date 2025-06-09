@@ -1,24 +1,27 @@
 import React from 'react'
 import { LoginInput } from '../models/LoginInputDTO'
+import { API_PROD } from '../models/variables';
+
 
 
 const useUser = () => {
-    const handleLogin = async (loginInput:LoginInput) => {
-        try{
-            const response = await fetch(`http://localhost:5270/auth/users`,{
-                headers:{
-                    "Content-Type" : "application/json"
+
+    const handleLogin = async (loginInput: LoginInput) => {
+        try {
+            const response = await fetch(`${API_PROD}/auth/users`, {
+                headers: {
+                    "Content-Type": "application/json"
                 },
                 method: "POST",
                 body: JSON.stringify(loginInput)
             });
-            if(!response.ok){
+            if (!response.ok) {
                 console.error("ERROR RESPONSE HANDLE LOGIN");
             }
 
             const dataResponse = await response.json();
             return dataResponse;
-        }catch(error:any){
+        } catch (error: any) {
             console.error("ERROR SERVER HANDLE LOGIN: " + error);
         }
     }

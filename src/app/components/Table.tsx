@@ -3,6 +3,7 @@ import useMovimientos from '../hooks/useMovimientos'
 import { MovimientosDTO } from '../models/MovimientosDTO';
 import Cookies from 'js-cookie';
 import ObtenerCookies from '../models/ObtenerCookies';
+import { API_PROD } from '../models/variables';
 
 
 const Table = () => {
@@ -14,7 +15,7 @@ const Table = () => {
   const handleGetMovimientos = async () => {
     try {
 
-      const response = await fetch(`http://localhost:5270/api/Mantenimiento/listar_movimientos`, {
+      const response = await fetch(`${API_PROD}/api/Mantenimiento/listar_movimientos`, {
         headers: {
           "Content-Type": "application/json",
           "Authorization" : `Bearer ${cookieParse[0].token}`

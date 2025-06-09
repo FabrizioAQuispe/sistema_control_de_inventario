@@ -1,0 +1,1 @@
+export const API_PROD = process.env.NEXT_PUBLIC_API_PROD;

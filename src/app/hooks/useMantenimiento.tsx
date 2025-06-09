@@ -1,6 +1,7 @@
 import React from 'react'
 import { MantenimientoDTO } from '../models/MantenimientoDTO';
 import ObtenerCookies from '../models/ObtenerCookies';
+import { API_PROD } from '../models/variables';
 
 const useMantenimiento = () => {
 
@@ -9,7 +10,7 @@ const useMantenimiento = () => {
     const handleBuscarNombre = async (nombre: string) => {
         try {
             const response = await fetch(
-                `http://localhost:5270/api/Mantenimiento/buscar_nombre?nombre=${encodeURIComponent(nombre)}`,
+                `${API_PROD}/api/Mantenimiento/buscar_nombre?nombre=${encodeURIComponent(nombre)}`,
                 {
                     headers: {
                         "Content-Type": "application/json"
@@ -37,7 +38,7 @@ const useMantenimiento = () => {
 
     const handleCrearMantenimiento = async (mantenimientoInput: MantenimientoDTO) => {
         try {
-            const response = await fetch('http://localhost:5270/api/Mantenimiento/crear_seguimiento', {
+            const response = await fetch(`${API_PROD}/api/Mantenimiento/crear_seguimiento`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${cookieParse[0].token}`
@@ -59,7 +60,7 @@ const useMantenimiento = () => {
 
     const handleListarMantenimiento = async () => {
         try {
-            const response = await fetch('http://localhost:5270/api/Mantenimiento/buscar_seguimiento', {
+            const response = await fetch(`${API_PROD}/api/Mantenimiento/buscar_seguimiento`, {
                 headers: {
                     "Content-Type": "application/json",
                                         "Authorization": `Bearer ${cookieParse[0].token}`
@@ -81,7 +82,7 @@ const useMantenimiento = () => {
 
     const handleEditarMantenimiento = async () => {
         try {
-            const response = await fetch(`http://localhost:5270/editar_productos`, {
+            const response = await fetch(`${API_PROD}/editar_productos`, {
                 headers: {
                     "Content-Type": "application/json"
                 },
