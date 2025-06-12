@@ -8,7 +8,10 @@ interface Props {
 
 const Table = ({ movimientos }: Props) => {
   return (
-    <table className="min-w-full border border-gray-200 divide-y divide-gray-300">
+    <table 
+      id="movimientos-table"  // ← ESTA LÍNEA ES CLAVE
+      className="min-w-full border border-gray-200 divide-y divide-gray-300"
+    >
       <thead className="bg-gray-800 text-white">
         <tr>
           <th className="px-4 py-2 text-left">FECHA</th>
