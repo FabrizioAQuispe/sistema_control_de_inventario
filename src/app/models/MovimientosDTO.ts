@@ -4,5 +4,6 @@ export interface MovimientosDTO{
     referencia:string,
     ingresos:string,
     salidas:string,
-    stock:string
+    stock:string,
+    usuario_master?:string
 }

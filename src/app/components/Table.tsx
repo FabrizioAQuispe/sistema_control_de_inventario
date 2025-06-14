@@ -1,12 +1,16 @@
 // Table.tsx
 import React from 'react';
 import { MovimientosDTO } from '../models/MovimientosDTO';
+import {cookieParse} from '../provider/CookiesData';
+
 
 interface Props {
   movimientos: MovimientosDTO[];
 }
 
 const Table = ({ movimientos }: Props) => {
+  
+  
   return (
     <table 
       id="movimientos-table"  // ← ESTA LÍNEA ES CLAVE
@@ -20,6 +24,7 @@ const Table = ({ movimientos }: Props) => {
           <th className="px-4 py-2 text-left">SALIDA</th>
           <th className="px-4 py-2 text-left">STOCK</th>
           <th className="px-4 py-2 text-left">REFERENCIA</th>
+          <th className='px-4 py-2 text-left'> USUARIO</th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -31,6 +36,7 @@ const Table = ({ movimientos }: Props) => {
             <td className="px-4 py-2">{item.salidas}</td>
             <td className="px-4 py-2">{item.stock}</td>
             <td className="px-4 py-2">{item.referencia}</td>
+            <td className='px-4 py-2'>{item.usuario_master}</td>
           </tr>
         ))}
       </tbody>

@@ -7,11 +7,11 @@ import { MovimientosDTO } from '@/app/models/MovimientosDTO';
 import useReportes from '@/app/hooks/useReportes';
 
 const Movimientos = () => {
-  const [filtros, setFiltros] = useState({ nombre: '', fecha_inicial: '', fecha_final: '' });
+  const [filtros, setFiltros] = useState({ nombre: '', fecha_inicial: '', fecha_final: '',usuario_creado:'' });
   const [resultados, setResultados] = useState<MovimientosDTO[]>([]);
   const [isExporting, setIsExporting] = useState(false);
   const { handleGetMovimientos, handleFiltrarMovimientos } = useMovimientos();
-  const { ExportReport, ExportTableToExcel } = useReportes();
+  const { ExportTableToExcel } = useReportes();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,55 +22,13 @@ const Movimientos = () => {
     e.preventDefault();
     const data = await handleFiltrarMovimientos(filtros.nombre, filtros.fecha_inicial, filtros.fecha_final);
     if (data) {
+      console.log(data)
       setResultados(data);
     }
   };
 
-  // Método 1: Exportar desde los datos (más limpio)
-  const handleExportExcel = async () => {
-    if (resultados.length === 0) {
-      alert('No hay datos para exportar');
-      return;
-    }
 
-    setIsExporting(true);
-    
-    try {
-      // Generar nombre del archivo basado en los filtros
-      let fileName = 'movimientos_reporte';
-      
-      if (filtros.fecha_inicial || filtros.fecha_final) {
-        const fechaInicio = filtros.fecha_inicial ? 
-          new Date(filtros.fecha_inicial).toLocaleDateString('es-PE').replace(/\//g, '-') : 
-          'inicio';
-        const fechaFin = filtros.fecha_final ? 
-          new Date(filtros.fecha_final).toLocaleDateString('es-PE').replace(/\//g, '-') : 
-          'fin';
-        fileName = `movimientos_${fechaInicio}_${fechaFin}`;
-      }
-      
-      if (filtros.nombre) {
-        fileName += `_${filtros.nombre.replace(/\s+/g, '_')}`;
-      }
 
-      const result = ExportReport(resultados, fileName);
-      
-      if (result.success) {
-        console.log('✅ Exportación exitosa');
-        alert('Archivo Excel descargado exitosamente');
-      } else {
-        console.error('❌ Error en la exportación:', result.message);
-        alert('Error al exportar el archivo. Intenta nuevamente.');
-      }
-    } catch (error) {
-      console.error('Error inesperado:', error);
-      alert('Error inesperado al generar el reporte.');
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
-  // Método 2: Exportar desde la tabla HTML (mantiene formato visual)
   const handleExportTableHTML = async () => {
     if (resultados.length === 0) {
       alert('No hay datos para exportar');
@@ -111,7 +69,7 @@ const Movimientos = () => {
     } finally {
       setIsExporting(false);
     }
-  };
+  };3
 
   useEffect(() => {
     const fetchingData = async () => {
@@ -159,6 +117,8 @@ const Movimientos = () => {
             className="w-full border px-2 py-1 rounded"
           />
         </div>
+
+
       </form>
 
       <div className='flex gap-2 mb-4'>

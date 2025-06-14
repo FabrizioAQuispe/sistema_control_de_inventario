@@ -56,7 +56,7 @@ export default function Home() {
     <main className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 p-4">
       <div className="bg-blue-950 bg-opacity-90 rounded-lg shadow-lg flex flex-col gap-6 w-full max-w-md p-8">
         <h2 className="text-white text-3xl font-semibold text-center mb-4">
-          Sistema Control de Inventario
+          Sistema Control de Inventario de Suministros
         </h2>
         
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

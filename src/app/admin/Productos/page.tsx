@@ -1,12 +1,14 @@
 "use client"
 import ModalEditar from '@/app/components/ModalEditar';
+import useCategorias from '@/app/hooks/useCategorias';
 import useProductos from '@/app/hooks/useProductos';
+import { CategoriasDTO } from '@/app/models/CategoriasDTO';
 import { ProductosDTO } from '@/app/models/ProductsDTO';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Productos = () => {
-  //HOOK PARA CREAR EL FORM DATA
+
   const [formData, setFormData] = useState({
     "id_prod": 0,
     "nombre": "",
@@ -14,7 +16,6 @@ const Productos = () => {
     "estado": ""
   });
 
-  //Hooks para los productos
   const [listProducts, setListProducts] = useState<ProductosDTO[]>([]);
 
   const { handleCreateProductos, handleGetProductos, handleUpdateProductos } = useProductos();
@@ -30,10 +31,8 @@ const Productos = () => {
     fetchData();
   }, []);
 
-  //Hooks para abrir los popups
   const [IsOpen, setIsOpen] = useState(false);
 
-  //Metodo para pasar abrir el modal de acuerdo a lo selecionado
   const [productoSeleccionado, setProductoSeleccionado] = useState<any>();
 
   const handleMostrarModal = (producto: ProductosDTO) => {
@@ -47,6 +46,18 @@ const Productos = () => {
     console.log(producto.id_prod)
     setIsOpen(true);
   };
+
+  const [listCategorias, setListCategorias] = useState<CategoriasDTO[]>([]);
+  const { handleListCategorias } = useCategorias();
+
+  //Listando todas las categorías
+  useEffect(() => {
+    const fetchingData = async () => {
+      const responseCategorias = await handleListCategorias();
+      setListCategorias(responseCategorias)
+    }
+    fetchingData();
+  }, [])
 
 
   return (
@@ -62,12 +73,40 @@ const Productos = () => {
             />
           </div>
 
-          <div className='flex flex-col'>
+<div className=" ">
+  <div className="">
+    <label htmlFor="">Categoria: </label>
+    <select 
+      name="categoria" 
+      id="categoria"
+      value={formData.categoria}
+      onChange={(e) => setFormData(prev => ({ ...prev, categoria: e.target.value }))}
+      className="w-full px-4 py-3 text-gray-700 bg-gray-50 border border-gray-200 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-blue-500 transition-all duration-200"
+    >
+      <option value="">Seleccione una categoria: </option>
+      {
+        listCategorias.map((item) => (
+          <option key={item.nombre} value={item.nombre}>
+            {item.nombre}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+</div>
+
+          {/* <div className='flex flex-col'>
             <label htmlFor="">Ingresa la categoría</label>
-            <input className='px-2 py-2 border border-blue-700 outline rounded-md mb-2' type="text" name="categoria" id=""
-              onChange={(e) => setFormData(prev => ({ ...prev, categoria: e.target.value }))}
-            />
-          </div>
+            <select name="categoria" id="categoria">
+              <option value="">-- Selecciona una categoría --</option>
+              {
+                listCategorias.map((item) => (
+                  <option key={item.nombre} value={item.nombre}>{item.nombre}</option>
+                ))
+              }
+            </select>
+
+          </div> */}
 
 
           <div className='flex flex-col'>

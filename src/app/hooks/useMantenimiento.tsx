@@ -28,7 +28,7 @@ const useMantenimiento = () => {
 
             const lista = await response.json();
 
-            const soloNombres = lista.map((item: any) => ({
+            const soloNombres = lista.map((item: any) => ({ 
                 nombre: item.nombre,
                 id_prod: item.id_prod
             })); return soloNombres;
