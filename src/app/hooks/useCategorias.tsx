@@ -2,7 +2,6 @@ import React from 'react'
 import { cookieParse } from '../provider/CookiesData'
 import { API_PROD } from '../models/variables';
 import { NextResponse } from 'next/server';
-import { error } from 'console';
 
 const useCategorias = () => {
     const token = cookieParse[0].token;

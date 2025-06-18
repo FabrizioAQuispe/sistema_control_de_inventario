@@ -1,17 +1,19 @@
 "use client"
 import { deleteCookie } from 'cookies-next';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBoxOpen } from 'react-icons/fa';
 import { IoHomeOutline } from 'react-icons/io5';
 import { MdRemoveRedEye } from 'react-icons/md';
 import { SiGoogleearthengine } from 'react-icons/si';
 import { SlLogout } from 'react-icons/sl';
 import { cookieParse } from '../provider/CookiesData';
+import useProductos from '../hooks/useProductos';
 
 const Dashboard = () => {
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const nombre = cookieParse[0].nombre_usuario;
+
 
   return (
     <>

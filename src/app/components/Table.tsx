@@ -10,7 +10,6 @@ interface Props {
 
 const Table = ({ movimientos }: Props) => {
   
-  
   return (
     <table 
       id="movimientos-table"  // ← ESTA LÍNEA ES CLAVE

@@ -2,7 +2,7 @@ import React from 'react'
 import { LoginInput } from '../models/LoginInputDTO'
 import { API_PROD } from '../models/variables';
 import Cookies from 'js-cookie';
-
+import { RegisterDTO } from '../models/RegisterDTO';
 
 
 const useUser = () => {
@@ -31,6 +31,28 @@ const useUser = () => {
         }
     }
 
+    const handleRegister = async (registerInput:RegisterDTO) => {
+        try{
+            const response = await fetch(`${API_PROD}/auth/register`,{
+                headers:{
+                    "Content-Type" : "application/json"
+                },
+                method: "POST",
+                body:JSON.stringify(registerInput)
+            });
+
+            if(!response.ok){
+                console.error("ERROOR RESPONSE HANDLE REGISTER");
+            }
+
+            const dataResponse = await response.json();
+            return dataResponse;
+        }catch(error:any){
+            console.error("ERROR SERVER API HANDLE REGISTER: " + error);
+            throw error;
+        }
+    }
+
     const handlePerfil = async () => {
         try {
             console.log(cookieParse)
@@ -42,6 +64,7 @@ const useUser = () => {
 
     return {
         handleLogin,
+        handleRegister,
         handlePerfil
     }
 }

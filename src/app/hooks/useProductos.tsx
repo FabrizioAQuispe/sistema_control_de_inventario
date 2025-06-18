@@ -78,10 +78,77 @@ const token = cookieParse[0]?.token || "";
         }
     }
 
+    const handleListarSalidas = async () => {
+        try{
+            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Salidas`,{
+                headers:{
+                    "Content-Type" : "application/json"
+                },
+                method: "GET",
+            });
+
+            if(!response.ok){
+                console.error("ERROR SERVER RESPONSE API LISTAR SALIDAS");
+            }
+
+            const datasResponse = await response.json();
+            console.log(datasResponse)
+            return datasResponse;
+        }catch(error:any){
+            console.error("ERROR SERVER RESPONSE HANDLE LISTAR SALIDAS: " + error);
+        }
+    }
+
+    const handleListarIngresos = async () => {
+        try{
+            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Ingresos`,{
+                headers:{
+                    "Content-Type" :"application/json"
+                },
+                method: "GET"
+            });
+
+                        if(!response.ok){
+                console.error("ERROR SERVER RESPONSE API LISTAR SALIDAS");
+            }
+
+            const datasResponse = await response.json();
+            console.log(datasResponse)
+            return datasResponse;
+
+        }catch(error:any){
+            console.error("ERROR SERVER RESPONSE HANDLE LISTAR INGRESOS: " + error);
+        }
+    }
+
+    const handleListarStockTotal = async () => {
+        try{
+            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Stock_Total`,{
+                headers:{
+                    "Content-Type" : "application/json"
+                },
+                method: "GET"
+            });
+
+            if(!response.ok){
+                console.error("ERROR SERVER RESPONSE API LISTAR TOTAL");
+            }
+
+            const datasResponse = await response.json();
+            console.log(datasResponse);
+            return datasResponse;
+        }catch(error:any){
+            console.error("ERROR SERVER RESPONSE HANDLE LISTAR STOCK TOTAL: " + error);
+        }
+    }
+
     return {
         handleGetProductos,
         handleCreateProductos,
-        handleUpdateProductos
+        handleUpdateProductos,
+        handleListarIngresos,
+        handleListarSalidas,
+        handleListarStockTotal
     }
 }
 

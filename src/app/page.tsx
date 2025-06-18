@@ -28,7 +28,7 @@ export default function Home() {
 
     try {
       const dataResponse = await handleLogin(formData);
-      
+
       // Verificar si el login fue exitoso
       if (dataResponse) {
         // Dar un pequeño delay para que el estado se actualice
@@ -38,7 +38,7 @@ export default function Home() {
       } else {
         setError("Credenciales inválidas");
       }
-      
+
     } catch (error: any) {
       console.error("Error al iniciar sesión:", error);
       setError(error.message || "Error al iniciar sesión. Verifica tus credenciales.");
@@ -58,7 +58,7 @@ export default function Home() {
         <h2 className="text-white text-3xl font-semibold text-center mb-4">
           Sistema Control de Inventario de Suministros
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <label htmlFor="email" className="text-white font-medium block mb-2">
@@ -70,7 +70,7 @@ export default function Home() {
               id="email"
               placeholder="ejemplo@correo.com"
               value={formData.email}
-              onChange={(e) => setFormData(prev => ({...prev, email: e.target.value}))}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
               disabled={loginLoading}
               className="w-full px-4 py-2 rounded-md border border-gray-600 bg-blue-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
               required
@@ -87,7 +87,7 @@ export default function Home() {
               id="password"
               placeholder="••••••••"
               value={formData.password}
-              onChange={(e) => setFormData(prev => ({...prev, password: e.target.value}))}
+              onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
               disabled={loginLoading}
               className="w-full px-4 py-2 rounded-md border border-gray-600 bg-blue-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
               required
@@ -117,6 +117,18 @@ export default function Home() {
               "Ingresar"
             )}
           </button>
+          <Link
+            href="/Register"
+            className="flex items-center justify-center space-x-2 text-white hover:text-blue-300 transition-colors duration-200 font-medium"
+          >
+            <span>¿No tienes cuenta?</span>
+            <span className="text-blue-400 hover:text-blue-300 font-semibold flex items-center space-x-1">
+              <span>Regístrate</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </Link>
         </form>
       </div>
     </main>

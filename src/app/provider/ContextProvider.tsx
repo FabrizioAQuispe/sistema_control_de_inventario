@@ -27,10 +27,8 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Crear el contexto
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// Hook personalizado para usar el contexto
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -39,13 +37,11 @@ export const useAuth = (): AuthContextType => {
   return context;
 };
 
-// Provider del contexto
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Verificar si hay un usuario autenticado al cargar la aplicación
   useEffect(() => {
     checkAuthStatus();
   }, []);
@@ -71,7 +67,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const handleLogin = async (loginInput: LoginInput) => {
     try {
-      console.log("Enviando login request:", loginInput); // Debug
+      console.log("Enviando login request:", loginInput); 
       
       const response = await fetch(`${API_PROD}/auth/users`, {
         headers: {
@@ -81,25 +77,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         body: JSON.stringify(loginInput)
       });
 
-      console.log("Response status:", response.status); // Debug
+      console.log("Response status:", response.status);
 
       const dataResponse = await response.json();
-      console.log("Response data:", dataResponse); // Debug
+      console.log("Response data:", dataResponse);
 
       if (!response.ok) {
-        // Si el servidor responde con error, lanzar excepción con el mensaje del servidor
         const errorMessage = dataResponse.message || dataResponse.error || `Error HTTP: ${response.status}`;
         throw new Error(errorMessage);
       }
 
-      // Login exitoso - actualizar el estado
       if (dataResponse) {
-        // Ser más flexible con la estructura de respuesta
         const userData = dataResponse.user || dataResponse.data || dataResponse;
         
-        console.log("UserData to save:", userData); // Debug
+        console.log("UserData to save:", userData);
         
-        // Guardar los datos sin importar la estructura exacta
         setUser(userData);
         setIsAuthenticated(true);
         setCookie("data", JSON.stringify(userData));
@@ -109,12 +101,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (error: any) {
       console.error("ERROR SERVER HANDLE LOGIN:", error);
       
-      // Si es un error de red o fetch
       if (error.name === 'TypeError' || error.message.includes('fetch')) {
         throw new Error("Error de conexión. Verifica tu internet");
       }
       
-      // Re-lanzar el error para que el componente pueda manejarlo
       throw error;
     }
   };
