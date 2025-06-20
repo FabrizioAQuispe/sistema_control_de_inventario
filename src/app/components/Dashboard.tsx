@@ -9,11 +9,26 @@ import { SiGoogleearthengine } from 'react-icons/si';
 import { SlLogout } from 'react-icons/sl';
 import { cookieParse } from '../provider/CookiesData';
 import useProductos from '../hooks/useProductos';
+import Cookies from 'js-cookie';
+
 
 const Dashboard = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const nombre = cookieParse[0].nombre_usuario;
-
+      const [nombreUsuario, setNombreUsuario] = useState<string | null>(null);
+    
+          useEffect(() => {
+    const cookieProfile = Cookies.get("data");
+    if (cookieProfile) {
+      try {
+        const parsed = JSON.parse(cookieProfile);
+        setNombreUsuario(parsed[0]?.nombre_usuario ?? 'Invitado');
+      } catch {
+        setNombreUsuario('Invitado');
+      }
+    } else {
+      setNombreUsuario('Invitado');
+    }
+  }, []);
 
   return (
     <>
@@ -64,12 +79,12 @@ const Dashboard = () => {
             <div className='flex items-center gap-3'>
               <div className='w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center'>
                 <span className='text-white text-sm font-semibold'>
-                  {nombre?.charAt(0)?.toUpperCase() || 'U'}
+                  {nombreUsuario?.charAt(0)?.toUpperCase() || 'U'}
                 </span>
               </div>
               <div>
                 <p className='text-xs text-slate-400'>Bienvenido</p>
-                <p className='text-sm font-medium text-white truncate max-w-[140px]'>{nombre}</p>
+                <p className='text-sm font-medium text-white truncate max-w-[140px]'>{nombreUsuario}</p>
               </div>
             </div>
           </div>

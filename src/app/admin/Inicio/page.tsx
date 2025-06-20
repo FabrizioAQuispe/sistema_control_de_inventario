@@ -11,13 +11,28 @@ const Index = () => {
   const cookieProfile = typeof window !== 'undefined' ? Cookies.get("data") : null;
   const cookieParse = cookieProfile ? JSON.parse(cookieProfile) : [];
 
-  const NombreUsuario = cookieParse[0].nombre_usuario;
 
   const [ingresos, setIngresos] = useState<any[]>([]);
   const [salidas, setSalidas] = useState<any[]>([]);
   const [totales, setTotaltes] = useState<any[]>([]);
 
   const { handleListarIngresos, handleListarSalidas, handleListarStockTotal } = useProductos();
+
+    const [nombreUsuario, setNombreUsuario] = useState<string | null>(null);
+
+    useEffect(() => {
+    const cookieProfile = Cookies.get("data");
+    if (cookieProfile) {
+      try {
+        const parsed = JSON.parse(cookieProfile);
+        setNombreUsuario(parsed[0]?.nombre_usuario ?? 'Invitado');
+      } catch {
+        setNombreUsuario('Invitado');
+      }
+    } else {
+      setNombreUsuario('Invitado');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchingDataSalidas = async () => {
@@ -47,7 +62,7 @@ const Index = () => {
       <div className="flex-1 p-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard de {NombreUsuario}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard de {nombreUsuario}</h1>
           <p className="text-gray-600">Resumen general del inventario</p>
         </div>
 

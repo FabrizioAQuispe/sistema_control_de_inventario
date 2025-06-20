@@ -1,155 +1,133 @@
-import React, { useEffect } from 'react'
+import React from 'react';
 import { ProductosDTO } from '../models/ProductsDTO';
-import Cookies from 'js-cookie';
 import { API_PROD } from '../models/variables';
+import { useApiRequest } from '@/app/utils/AuthUtils';
 
 const useProductos = () => {
+  const { makeRequest, loading, error, reset } = useApiRequest();
 
-const cookieProfile = typeof window !== 'undefined' ? Cookies.get("data") : null;
-const cookieParse = cookieProfile ? JSON.parse(cookieProfile) : [];
-const token = cookieParse[0]?.token || "";
-
-    const handleGetProductos = async () => {
-        try {
-            const response = await fetch(`${API_PROD}/listar_productos`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                method: "GET"
-            });
-
-            if (!response.ok) {
-                console.error("ERROR SERVER RESPONSE");
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error: any) {
-            console.error("ERROR HANDLE LIST PRODUCTS: " + error);
-        }
+  const handleGetProductos = async (): Promise<ProductosDTO[]> => {
+    try {
+      const response = await makeRequest(`${API_PROD}/listar_productos`);
+      return response as ProductosDTO[];
+    } catch (error) {
+      console.error("Error al obtener productos:", error);
+      return []; 
     }
+  };
 
-    const handleCreateProductos = async (productosInput: ProductosDTO) => {
-        try {
-            const response = await fetch(`${API_PROD}/crear_productos`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+  const handleCreateProductos = async (productosInput: ProductosDTO) => {
+    try {
+      if (!productosInput) {
+        throw new Error('Los datos del producto son requeridos');
+      }
 
-                },
-                method: "POST",
-                body: JSON.stringify(productosInput)
-            });
+      const data = await makeRequest(`${API_PROD}/crear_productos`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productosInput)
+      });
 
-            if (!response.ok) {
-                console.error("ERROR SERVER RESPONSE");
-            }
-
-            const data = await response.json();
-            console.log(data)
-            handleGetProductos()
-            return data;
-        } catch (error: any) {
-            console.error("ERROR HANDLE CREATE PRODUCTS: " + error);
-        }
+      console.log('Producto creado:', data);
+      return data;
+    } catch (error) {
+      console.error("Error al crear producto:", error);
+      throw error;
     }
+  };
 
-    const handleUpdateProductos = async (productosInput: ProductosDTO) => {
-        try {
-            const response = await fetch(`${API_PROD}/editar_productos`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+  const handleUpdateProductos = async (productosInput: ProductosDTO) => {
+    try {
+      if (!productosInput) {
+        throw new Error('Los datos del producto son requeridos');
+      }
 
-                },
-                method: "PUT",
-                body: JSON.stringify(productosInput)
-            });
+      const data = await makeRequest(`${API_PROD}/editar_productos`, {
+        method: "PUT",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productosInput)
+      });
 
-            if (!response.ok) {
-                console.error("ERROR SERVER RESPONSE API UPDATE PRODUCTS");
-            }
-
-            const data = await response.json();
-            return data;
-        } catch (error: any) {
-            console.error("ERROR SERVER RESPONSE: " + error);
-        }
+      console.log('Producto actualizado:', data);
+      return data;
+    } catch (error) {
+      console.error("Error al actualizar producto:", error);
+      throw error;
     }
+  };
 
-    const handleListarSalidas = async () => {
-        try{
-            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Salidas`,{
-                headers:{
-                    "Content-Type" : "application/json"
-                },
-                method: "GET",
-            });
-
-            if(!response.ok){
-                console.error("ERROR SERVER RESPONSE API LISTAR SALIDAS");
-            }
-
-            const datasResponse = await response.json();
-            console.log(datasResponse)
-            return datasResponse;
-        }catch(error:any){
-            console.error("ERROR SERVER RESPONSE HANDLE LISTAR SALIDAS: " + error);
-        }
+  const handleListarSalidas = async () => {
+    try {
+      const response = await makeRequest(`${API_PROD}/api/Dashboard/Listar_Salidas`);
+      
+      // Manejo similar para extraer los datos correctos
+      return response as [];
+    } catch (error) {
+      console.error("Error al listar salidas:", error);
+      return []; // Retornar array vacío en caso de error
     }
+  };
 
-    const handleListarIngresos = async () => {
-        try{
-            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Ingresos`,{
-                headers:{
-                    "Content-Type" :"application/json"
-                },
-                method: "GET"
-            });
-
-                        if(!response.ok){
-                console.error("ERROR SERVER RESPONSE API LISTAR SALIDAS");
-            }
-
-            const datasResponse = await response.json();
-            console.log(datasResponse)
-            return datasResponse;
-
-        }catch(error:any){
-            console.error("ERROR SERVER RESPONSE HANDLE LISTAR INGRESOS: " + error);
-        }
+  const handleListarIngresos = async () => {
+    try {
+      const response = await makeRequest(`${API_PROD}/api/Dashboard/Listar_Ingresos`);
+      return response as [];
+    } catch (error) {
+      console.error("Error al listar ingresos:", error);
+      return [];
     }
+  };
 
-    const handleListarStockTotal = async () => {
-        try{
-            const response = await fetch(`${API_PROD}/api/Dashboard/Listar_Stock_Total`,{
-                headers:{
-                    "Content-Type" : "application/json"
-                },
-                method: "GET"
-            });
-
-            if(!response.ok){
-                console.error("ERROR SERVER RESPONSE API LISTAR TOTAL");
-            }
-
-            const datasResponse = await response.json();
-            console.log(datasResponse);
-            return datasResponse;
-        }catch(error:any){
-            console.error("ERROR SERVER RESPONSE HANDLE LISTAR STOCK TOTAL: " + error);
-        }
+  const handleListarStockTotal = async () => {
+    try {
+      const response = await makeRequest(`${API_PROD}/api/Dashboard/Listar_Stock_Total`);
+      
+      // Para stock total, podría ser un número o un objeto
+      return response as any;
+    } catch (error) {
+      console.error("Error al listar stock total:", error);
+      return 0;
     }
+  };
 
-    return {
-        handleGetProductos,
-        handleCreateProductos,
-        handleUpdateProductos,
-        handleListarIngresos,
-        handleListarSalidas,
-        handleListarStockTotal
+  const handleDeleteProducto = async (productoId: string | number) => {
+    try {
+      if (!productoId) {
+        throw new Error('ID del producto es requerido');
+      }
+
+      const data = await makeRequest(`${API_PROD}/eliminar_productos/${productoId}`, {
+        method: "DELETE"
+      });
+
+      console.log('Producto eliminado:', data);
+      return data;
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      throw error;
     }
-}
+  };
 
-export default useProductos
+  const resetState = () => {
+    reset();
+  };
+
+  return {
+    handleGetProductos,
+    handleCreateProductos,
+    handleUpdateProductos,
+    handleListarIngresos,
+    handleListarSalidas,
+    handleListarStockTotal,
+    handleDeleteProducto,
+    loading,
+    error,
+    resetState
+  };
+};
+
+export default useProductos;

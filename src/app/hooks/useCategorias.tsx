@@ -4,7 +4,8 @@ import { API_PROD } from '../models/variables';
 import { NextResponse } from 'next/server';
 
 const useCategorias = () => {
-    const token = cookieParse[0].token;
+    
+    const token = cookieParse && cookieParse[0] ? cookieParse[0].token : null;
 
     const handleListCategorias = async () => {
         try{
