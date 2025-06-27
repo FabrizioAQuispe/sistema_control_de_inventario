@@ -225,7 +225,7 @@ export const useApiRequest = <T>(options: UseApiRequestOptions = {}) => {
               clearAuth(); // Limpiar token inválido
               // Opcional: redirigir al login
               if (typeof window !== 'undefined') {
-                window.location.href = '/login';
+                window.location.href = '/';
               }
               break;
             case 403:

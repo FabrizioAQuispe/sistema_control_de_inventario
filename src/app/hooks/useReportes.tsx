@@ -14,7 +14,8 @@ const useReportes = () => {
                 'INGRESO': item.ingresos,
                 'SALIDA': item.salidas,
                 'STOCK': item.stock,
-                'REFERENCIA': item.referencia
+                'REFERENCIA': item.referencia,
+                'USUARIO': item.usuario_master
             }));
 
             const woorksheets = XLSX.utils.json_to_sheet(woorksheet);
@@ -40,6 +41,7 @@ const useReportes = () => {
 
     const ExportTableToExcel = (tableId: string, fileName: string = 'reporte_movimientos') => {
         try {
+            console.log(tableId)
             const table = document.getElementById(tableId);
             if (!table) {
                 throw new Error("Tabla no encontrada");

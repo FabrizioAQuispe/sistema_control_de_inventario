@@ -72,11 +72,11 @@ const Index = () => {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               {
-                ingresos.map((item: any) => (
+                salidas.map((item: any) => (
                   <div>
                     <p className="text-sm font-medium text-gray-600">Ingresos</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      {ingresos.reduce((total, item) => total + Number(item.ingresos), 0)}
+                      {salidas.reduce((total, item) => total + Number(item.salidas), 0)}
                     </p>
                   </div>
                 ))
@@ -93,11 +93,11 @@ const Index = () => {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               {
-                salidas.map((item: any) => (
+                ingresos.map((item: any) => (
                   <div>
                     <p className="text-sm font-medium text-gray-600">Salidas</p>
                     <p className="text-2xl font-bold text-gray-900">
-                      {salidas.reduce((total, item) => total + Number(item.salidas), 0)}
+                      {ingresos.reduce((total, item) => total + Number(item.ingresos), 0)}
                     </p>
                   </div>
                 ))

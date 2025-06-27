@@ -12,6 +12,7 @@ import { ProductosDTO } from '@/app/models/ProductsDTO'
 import { UpdateProductosDTO } from '@/app/models/UpdateProductosDTO'
 import Cookies from 'js-cookie';
 
+
 const Mantenimiento = () => {
   const cookieProfile = typeof window !== 'undefined' ? Cookies.get("data") : null;
   const cookieParse = cookieProfile ? JSON.parse(cookieProfile) : [];
@@ -286,9 +287,9 @@ const Mantenimiento = () => {
       </div>
 
       {/* TABLA CON SCROLL VERTICAL */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="max-h-[500px] overflow-y-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden  max-h-[300px] overflow-y-auto">
+        <div className="max-h-[300px] ">
+          <table className="min-w-full divide-y divide-gray-200 min-h-[300px]">
             <thead className="bg-gray-50 sticky top-0">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
